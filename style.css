@@ -113,9 +113,37 @@ header {
   font-family: var(--font-mono);
   font-size: 0.95rem;
   font-weight: 500;
-  min-width: 80px;
+  width: 88px;
   text-align: right;
   color: var(--text);
+  /* input reset */
+  border: none;
+  border-bottom: 1px solid transparent;
+  background: transparent;
+  outline: none;
+  padding: 0;
+  cursor: text;
+  transition: border-color 0.15s;
+  -moz-appearance: textfield;
+}
+
+.ctrl-val::-webkit-outer-spin-button,
+.ctrl-val::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.ctrl-val:hover,
+.ctrl-val:focus {
+  border-bottom-color: rgba(0,0,0,0.2);
+}
+
+.ctrl-val--pct { width: 48px; }
+
+.ctrl-unit {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--text-muted);
 }
 
 input[type=range] {

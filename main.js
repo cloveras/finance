@@ -11,11 +11,11 @@ function signedPct(val) {
 }
 
 function compute() {
-  const savAmt  = +document.getElementById('sav-amt').value;
-  const fundAmt = +document.getElementById('fund-amt').value;
-  const savRate  = +document.getElementById('sav-rate').value  / 100;
-  const fundRate = +document.getElementById('fund-rate').value / 100;
-  const inflRate = +document.getElementById('infl-rate').value / 100;
+  const savAmt  = +document.getElementById('sav-amt-out').value;
+  const fundAmt = +document.getElementById('fund-amt-out').value;
+  const savRate  = +document.getElementById('sav-rate-out').value  / 100;
+  const fundRate = +document.getElementById('fund-rate-out').value / 100;
+  const inflRate = +document.getElementById('infl-rate-out').value / 100;
 
   const rows = [];
   let savVal  = savAmt;
@@ -200,25 +200,47 @@ function renderChart({ rows, savAmt, fundAmt }) {
   });
 }
 
-function updateSliderLabels() {
-  document.getElementById('sav-amt-out').textContent  = (+document.getElementById('sav-amt').value).toLocaleString('nb-NO');
-  document.getElementById('fund-amt-out').textContent = (+document.getElementById('fund-amt').value).toLocaleString('nb-NO');
-  document.getElementById('sav-rate-out').textContent  = (+document.getElementById('sav-rate').value).toFixed(1)  + ' %';
-  document.getElementById('fund-rate-out').textContent = (+document.getElementById('fund-rate').value).toFixed(1) + ' %';
-  document.getElementById('infl-rate-out').textContent = (+document.getElementById('infl-rate').value).toFixed(1) + ' %';
-}
-
 function update() {
   const data = compute();
   renderMetrics(data);
   renderChart(data);
   renderTable(data);
-  updateSliderLabels();
 }
 
-['sav-amt', 'fund-amt', 'sav-rate', 'fund-rate', 'infl-rate'].forEach(id => {
-  document.getElementById(id).addEventListener('input', update);
-});
+// Keep slider and number input in sync; number input is the source of truth for compute().
+function bindControl(sliderId, numId) {
+  const slider = document.getElementById(sliderId);
+  const num    = document.getElementById(numId);
+
+  slider.addEventListener('input', () => {
+    num.value = slider.value;
+    update();
+  });
+
+  num.addEventListener('input', () => {
+    const val = parseFloat(num.value);
+    if (!isNaN(val)) {
+      slider.value = Math.min(Math.max(val, +slider.min), +slider.max);
+      update();
+    }
+  });
+
+  num.addEventListener('blur', () => {
+    let val = parseFloat(num.value);
+    const lo = parseFloat(num.min), hi = parseFloat(num.max);
+    if (isNaN(val)) val = parseFloat(slider.value);
+    val = Math.min(Math.max(val, lo), hi);
+    num.value = val;
+    slider.value = Math.min(Math.max(val, +slider.min), +slider.max);
+    update();
+  });
+}
+
+bindControl('sav-amt',   'sav-amt-out');
+bindControl('fund-amt',  'fund-amt-out');
+bindControl('sav-rate',  'sav-rate-out');
+bindControl('fund-rate', 'fund-rate-out');
+bindControl('infl-rate', 'infl-rate-out');
 
 document.getElementById('toggle-real').addEventListener('click', function () {
   showReal = !showReal;

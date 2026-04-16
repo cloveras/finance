@@ -27,35 +27,38 @@
       <div class="ctrl-card-label">Savings account — starting amount (NOK)</div>
       <div class="ctrl-row">
         <input type="range" id="sav-amt" min="50000" max="1000000" step="10000" value="100000">
-        <span class="ctrl-val" id="sav-amt-out">100 000</span>
+        <input type="number" class="ctrl-val" id="sav-amt-out" min="10000" max="10000000" step="1000" value="100000">
       </div>
     </div>
     <div class="ctrl-card">
       <div class="ctrl-card-label">Index fund — starting amount (NOK)</div>
       <div class="ctrl-row">
         <input type="range" id="fund-amt" min="50000" max="1000000" step="10000" value="100000">
-        <span class="ctrl-val" id="fund-amt-out">100 000</span>
+        <input type="number" class="ctrl-val" id="fund-amt-out" min="10000" max="10000000" step="1000" value="100000">
       </div>
     </div>
     <div class="ctrl-card">
       <div class="ctrl-card-label">Savings account — annual interest rate</div>
       <div class="ctrl-row">
         <input type="range" id="sav-rate" min="1" max="6" step="0.1" value="4">
-        <span class="ctrl-val" id="sav-rate-out">4.0 %</span>
+        <input type="number" class="ctrl-val ctrl-val--pct" id="sav-rate-out" min="0.1" max="20" step="0.1" value="4">
+        <span class="ctrl-unit">%</span>
       </div>
     </div>
     <div class="ctrl-card">
       <div class="ctrl-card-label">Index fund — annual nominal return</div>
       <div class="ctrl-row">
         <input type="range" id="fund-rate" min="4" max="16" step="0.5" value="10">
-        <span class="ctrl-val" id="fund-rate-out">10.0 %</span>
+        <input type="number" class="ctrl-val ctrl-val--pct" id="fund-rate-out" min="0.1" max="50" step="0.5" value="10">
+        <span class="ctrl-unit">%</span>
       </div>
     </div>
     <div class="ctrl-card ctrl-card--wide">
       <div class="ctrl-card-label">Inflation rate — annual, applied to both (Norwegian CPI ~2–3%)</div>
       <div class="ctrl-row">
         <input type="range" id="infl-rate" min="1" max="5" step="0.1" value="2.5">
-        <span class="ctrl-val" id="infl-rate-out">2.5 %</span>
+        <input type="number" class="ctrl-val ctrl-val--pct" id="infl-rate-out" min="0" max="20" step="0.1" value="2.5">
+        <span class="ctrl-unit">%</span>
       </div>
     </div>
   </div>
