@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Savings vs Index Fund — Norway</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <h1>Savings account vs global index fund</h1>
+    <p>Norway · taxable account · MSCI World benchmark</p>
+  </div>
+  <span class="header-badge">37.84% fund tax · 22% interest tax</span>
+</header>
+
+<div class="container">
+
+  <p class="section-label" style="margin-top:1.5rem;">Parameters</p>
+  <div class="controls-grid">
+    <div class="ctrl-card">
+      <div class="ctrl-card-label">Savings account — starting amount (NOK)</div>
+      <div class="ctrl-row">
+        <input type="range" id="sav-amt" min="50000" max="1000000" step="10000" value="100000">
+        <span class="ctrl-val" id="sav-amt-out">100 000</span>
+      </div>
+    </div>
+    <div class="ctrl-card">
+      <div class="ctrl-card-label">Index fund — starting amount (NOK)</div>
+      <div class="ctrl-row">
+        <input type="range" id="fund-amt" min="50000" max="1000000" step="10000" value="100000">
+        <span class="ctrl-val" id="fund-amt-out">100 000</span>
+      </div>
+    </div>
+    <div class="ctrl-card">
+      <div class="ctrl-card-label">Savings account — annual interest rate</div>
+      <div class="ctrl-row">
+        <input type="range" id="sav-rate" min="1" max="6" step="0.1" value="4">
+        <span class="ctrl-val" id="sav-rate-out">4.0 %</span>
+      </div>
+    </div>
+    <div class="ctrl-card">
+      <div class="ctrl-card-label">Index fund — annual nominal return</div>
+      <div class="ctrl-row">
+        <input type="range" id="fund-rate" min="4" max="16" step="0.5" value="10.5">
+        <span class="ctrl-val" id="fund-rate-out">10.5 %</span>
+      </div>
+    </div>
+    <div class="ctrl-card ctrl-card--wide">
+      <div class="ctrl-card-label">Inflation rate — annual, applied to both (Norwegian CPI ~2–3%)</div>
+      <div class="ctrl-row">
+        <input type="range" id="infl-rate" min="1" max="5" step="0.1" value="2.5">
+        <span class="ctrl-val" id="infl-rate-out">2.5 %</span>
+      </div>
+    </div>
+  </div>
+
+  <p class="section-label">After 10 years</p>
+  <div class="metrics" id="metrics"></div>
+
+  <div class="chart-section">
+    <div class="chart-header">
+      <p class="section-label" style="margin:0;">Growth over time</p>
+      <div class="chart-header-right">
+        <div class="legend">
+          <div class="legend-item">
+            <div class="legend-line" style="background:var(--blue);"></div>
+            <span>Index fund (post-tax)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-line dashed"></div>
+            <span>Savings (post-tax)</span>
+          </div>
+        </div>
+        <button type="button" id="toggle-real" class="chart-toggle">Real</button>
+      </div>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="chart" role="img" aria-label="Line chart comparing savings account vs index fund growth over 10 years">
+        Growth comparison over 10 years.
+      </canvas>
+    </div>
+  </div>
+
+  <p class="section-label">Year-by-year breakdown</p>
+  <div class="table-section">
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Yr</th>
+            <th>Savings</th>
+            <th>Savings (real)</th>
+            <th>Sav. gain</th>
+            <th>Fund (pre-tax)</th>
+            <th>Tax paid</th>
+            <th>Fund</th>
+            <th>Fund (real)</th>
+            <th>Fund gain</th>
+          </tr>
+        </thead>
+        <tbody id="tbl-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="note-box">
+    <span class="note-icon">※</span>
+    <div>
+      <p class="note-text">
+        <strong>Tax model:</strong> Savings interest taxed at 22% annually (kapitalinntekt).
+        Index fund gains taxed at 37.84% on realized annual gains — the Norwegian rate for equity
+        funds in a regular taxable account (22% &times; oppjusteringsfaktor 1.72).
+        An aksjesparekonto (ASK) defers tax until withdrawal and would show a larger fund advantage.
+        <strong>Return assumption:</strong> MSCI World trailing 10-year nominal ~10.5%/yr.
+        Savings rate held fixed — it is a spot rate and likely to fall.
+        <strong>Inflation:</strong> Real values are nominal values deflated by
+        (1&nbsp;+&nbsp;rate)<sup>year</sup>. Fund fees (~0.1–0.2%/yr) are not modelled.
+        <strong>Not financial advice.</strong>
+      </p>
+      <div class="sources">
+        <span>Sources:</span>
+        <a href="https://www.skatteetaten.no/person/skatt/hjelp-til-riktig-skatt/bank-og-finans/renter/" target="_blank" rel="noopener">Kapitalinntekt — Skatteetaten</a>
+        <span>·</span>
+        <a href="https://www.skatteetaten.no/satser/oppjusteringsfaktor/" target="_blank" rel="noopener">Oppjusteringsfaktor — Skatteetaten</a>
+        <span>·</span>
+        <a href="https://github.com/cloveras/finance" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
